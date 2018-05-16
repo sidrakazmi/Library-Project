@@ -12,54 +12,42 @@ import javax.validation.Valid;
 
 import java.net.URI;
 import java.util.List;
-
+/**
+ * This class has the logic for acting on web requests.
+ * 
+ * @author Sidra Kazmi
+ *
+ */
 @RestController
 @RequestMapping("/books")
 public class BookController {
 
 	@Autowired
 	BookService bookRep;
-
-	/**
-	 * Find All Books
-	 */
-	@GetMapping("/all")
-	public List<BookModel> getAllBooks() {
-		return bookRep.findAllBooks();
-	}
-
-	// Create a new Book
-	@PostMapping("/books/save")
-	/*public BookModel saveBook(@Valid @RequestBody BookModel newbook) {
-		return bookRep.addBook(newbook);
-	}*/
 	
-	public ResponseEntity<Object> createStudent(@RequestBody BookModel newBook) {
-		BookModel savedStudent = bookRep.addBook(newBook);
+
+    /**
+     * Creates a new book and saves it to the database
+     * @param newBook is a Member class item to be added
+     * @return a new book added as an object
+     */
+	@PostMapping("/add")
+	public ResponseEntity<BookModel> createBook(@RequestBody BookModel newBook) {
+		BookModel createdBook = bookRep.addBook(newBook);
 
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-				.buildAndExpand(savedStudent.getId()).toUri();
+				.buildAndExpand(createdBook.getId()).toUri();
 
 		return ResponseEntity.created(location).build();
 
 	}
 
-	// Find a Book by Id
-	@GetMapping("books/{id}")
-	public ResponseEntity<BookModel> getBookById(@PathVariable(value = "id") Long bookId) {
-
-
-		BookModel bookModel = bookRep.findOneBook(bookId);
-
-		if (bookModel == null) {
-			return ResponseEntity.notFound().build();
-		} else
-			return ResponseEntity.ok().body(bookModel);
-
-	}
-
-	// Update a Book
-	@PutMapping("books/{id}")
+    /**
+     * Updates a book and saves it to the database
+     * @param bookDetails is a Book class item to be added
+     * @return updatedBook as an object
+     */
+	@PutMapping("/update/{id}")
 	public BookModel updateBook(@PathVariable(value = "id") Long bookId, @Valid @RequestBody BookModel bookDetails) {
 
 		BookModel bookModel = bookRep.findOneBook(bookId);
@@ -70,9 +58,23 @@ public class BookController {
 		BookModel updatedBook = bookRep.addBook(bookModel);
 		return updatedBook;
 	}
+	// Find a Book by Id
+	@GetMapping("/find/{id}")
+	public ResponseEntity<BookModel> getBookById(@PathVariable(value = "id") Long bookId) {
+
+		BookModel bookModel = bookRep.findOneBook(bookId);
+
+		if (bookModel == null) {
+			return ResponseEntity.notFound().build();
+		} else
+			return ResponseEntity.ok().body(bookModel);
+
+	}
+
+
 
 	/* Delete a book */
-	@DeleteMapping("books/{id}")
+	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<BookModel> deleteMember(@PathVariable(value = "id") Long bookId) {
 
 		BookModel bookModel = bookRep.findOneBook(bookId);
@@ -81,6 +83,15 @@ public class BookController {
 		} else
 			bookRep.delete(bookModel);
 		return ResponseEntity.ok().build();
+	}
+	
+	 /**
+     * Lists All Books in the database
+     * @return List of all the books
+     */
+	@GetMapping("/all")
+	public List<BookModel> getAllBooks() {
+		return bookRep.findAllBooks();
 	}
 
 }

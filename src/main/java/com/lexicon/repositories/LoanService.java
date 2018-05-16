@@ -16,7 +16,7 @@ public class LoanService {
 	LoanRepository loanRepository;
 	
 	/*Add a new loan*/  //loan already exists exception
-	public Loan saveLoan(Loan newLoan) {
+	public Loan addLoan(Loan newLoan) {
 		return loanRepository.save(newLoan);
 	}
 	
