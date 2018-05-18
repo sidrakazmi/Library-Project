@@ -1,12 +1,15 @@
 package com.lexicon.models;
 
-import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+
 
 
 @Entity
@@ -22,9 +25,10 @@ public class Loan {
 	@OneToOne
 	private BookModel book;
 	
-	private LocalDateTime startDateAndTime;
-	private LocalDateTime dueDateAndTime;
-	private LocalDateTime returnDateAndTime;
+	private Date issueDate;
+	private Date returnDate;
+	
+	private boolean onLoan;
 	
 	
 	public Loan() {
@@ -32,18 +36,22 @@ public class Loan {
 	}
 
 
-	public Loan(long id, Member member, BookModel book, LocalDateTime startDateAndTime, LocalDateTime dueDateAndTime,
-			LocalDateTime returnDateAndTime) {
+	public Loan(long id, Member member, BookModel book) {
 		super();
 		this.id = id;
 		this.member = member;
 		this.book = book;
-		this.startDateAndTime = startDateAndTime;
-		this.dueDateAndTime = dueDateAndTime;
-		this.returnDateAndTime = returnDateAndTime;
+		this.issueDate = new Date();
+		
+		GregorianCalendar gCal = new GregorianCalendar();
+		gCal.add(GregorianCalendar.DAY_OF_MONTH, 14);		
+		this.returnDate = gCal.getTime();
+		
+		this.onLoan = false;
 	}
 
 
+	
 	public long getId() {
 		return id;
 	}
@@ -74,34 +82,54 @@ public class Loan {
 	}
 
 
-	public LocalDateTime getStartDateAndTime() {
-		return startDateAndTime;
+	public Date getIssueDate() {
+		return issueDate;
 	}
 
 
-	public void setStartDateAndTime(LocalDateTime startDateAndTime) {
-		this.startDateAndTime = startDateAndTime;
+	public void setIssueDate(Date startingDate) {
+		this.issueDate = startingDate;
 	}
 
 
-	public LocalDateTime getDueDateAndTime() {
-		return dueDateAndTime;
+	public Date getReturnDate() {
+		return returnDate;
 	}
 
 
-	public void setDueDateAndTime(LocalDateTime dueDateAndTime) {
-		this.dueDateAndTime = dueDateAndTime;
+	public void setReturnDate(Date returnDate) {
+		this.returnDate = returnDate;
 	}
 
 
-	public LocalDateTime getReturnDateAndTime() {
-		return returnDateAndTime;
+	public boolean isOnLoan() {
+		return onLoan;
 	}
 
 
-	public void setReturnDateAndTime(LocalDateTime returnDateAndTime) {
-		this.returnDateAndTime = returnDateAndTime;
+	public void setOnLoan(boolean onLoan) {
+		this.onLoan = onLoan;
+	}
+
+
+	public boolean HasNotBeenRuturned() {
+		return returnDate == null;
+	}
+
+
+	@Override
+	public String toString() {
+		return "Loan [id=" + id + ", member=" + member + ", book=" + book + ", issuetDateAndTime=" + issueDate
+				+ ", returnDateAndTime=" + returnDate + ", onLoan="
+				+ onLoan + "]";
+	}
+
+	public void endLoan() {
+		returnDate = new Date();
+		this.onLoan = false;
 	}
 	
-
+	
+	
+	
 }

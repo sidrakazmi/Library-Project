@@ -1,6 +1,10 @@
 package com.lexicon.repositories;
 
+import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +20,18 @@ public class LoanService {
 	LoanRepository loanRepository;
 	
 	/*Add a new loan*/  //loan already exists exception
-	public Loan addLoan(Loan newLoan) {
+	public  Loan addLoan(BookModel book, Member member) {
+		
+			Loan newLoan=new Loan();
+			Date startingDate = new Date();
+			newLoan.setBook(book);
+	        newLoan.setMember(member);
+	        newLoan.setIssueDate(startingDate);
+	       
+	        GregorianCalendar gCal = new GregorianCalendar();
+			gCal.add(GregorianCalendar.DAY_OF_MONTH, 14);		
+			newLoan.setReturnDate( gCal.getTime());
+			
 		return loanRepository.save(newLoan);
 	}
 	
@@ -28,7 +43,11 @@ public class LoanService {
 	/*Find a loan by book*/
 	public List<Loan> findByBook(BookModel  book) {
 		return loanRepository.findByBook(book);
-
+	}
+	
+	/*Find a loan by Id*/
+	public Loan findById(Long id) {
+		return loanRepository.getOne(id);			
 	}
 	
 	/*Find a loan by member*/

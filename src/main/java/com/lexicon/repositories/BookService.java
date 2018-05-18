@@ -18,7 +18,7 @@ public class BookService {
 	 * Save/Add a new book
 	 * @param newBook
 	 *            
-	 * @return a ModelAndView containing a single Book object. Or an
+	 * @return a newBook a single Book object added in Repository
 	 *      
 	 * @throws Book Already Available Exception
 	 *             if the book already exists
@@ -33,14 +33,18 @@ public class BookService {
 	}
 
 	
-	/*Find all books*/
+	/**
+	 * Lists all the books available
+	 *            
+	 * @return a all the books
+	 */
 	public List<BookModel> findAllBooks() {
 		return bookRepository.findAll();
 	}
 	
 	/*Update a book by id*/
 	public void updateBook(BookModel book, long id) {
-		book.setId(id);
+		book.setbookId(id);
 		bookRepository.save(book);
 	}
 	

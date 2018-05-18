@@ -18,12 +18,13 @@ import java.util.List;
  * @author Sidra Kazmi
  *
  */
+
 @RestController
 @RequestMapping("/books")
 public class BookController {
 
 	@Autowired
-	BookService bookRep;
+	BookService bookService;
 	
 
     /**
@@ -32,56 +33,65 @@ public class BookController {
      * @return a new book added as an object
      */
 	@PostMapping("/add")
+	//@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<BookModel> createBook(@RequestBody BookModel newBook) {
-		BookModel createdBook = bookRep.addBook(newBook);
+		BookModel createdBook = bookService.addBook(newBook);
 
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-				.buildAndExpand(createdBook.getId()).toUri();
+				.buildAndExpand(createdBook.getbookId()).toUri();
 
 		return ResponseEntity.created(location).build();
-
 	}
 
     /**
      * Updates a book and saves it to the database
-     * @param bookDetails is a Book class item to be added
+     * @param bookUpdates is a Book class item to be updated
      * @return updatedBook as an object
      */
 	@PutMapping("/update/{id}")
-	public BookModel updateBook(@PathVariable(value = "id") Long bookId, @Valid @RequestBody BookModel bookDetails) {
+	public BookModel updateBook(@PathVariable(value = "id") Long bookId, @Valid @RequestBody BookModel bookUpdates) {
 
-		BookModel bookModel = bookRep.findOneBook(bookId);
+		BookModel bookModel = bookService.findOneBook(bookId);
 
-		bookModel.setTitle(bookDetails.getTitle());
-		bookModel.setAuthor(bookDetails.getAuthor());
+		bookModel.setTitle(bookUpdates.getTitle());
+		bookModel.setAuthor(bookUpdates.getAuthor());
 
-		BookModel updatedBook = bookRep.addBook(bookModel);
+		BookModel updatedBook = bookService.addBook(bookModel);
 		return updatedBook;
 	}
-	// Find a Book by Id
+	
+
+    /**
+     * Finds a book from the database
+     * @param bookId is a Book class item to be searched for
+     * @return foundBook as a response
+     */
 	@GetMapping("/find/{id}")
 	public ResponseEntity<BookModel> getBookById(@PathVariable(value = "id") Long bookId) {
 
-		BookModel bookModel = bookRep.findOneBook(bookId);
+		BookModel foundBook = bookService.findOneBook(bookId);
 
-		if (bookModel == null) {
+		if (foundBook == null) {
 			return ResponseEntity.notFound().build();
 		} else
-			return ResponseEntity.ok().body(bookModel);
-
+			return ResponseEntity.ok().body(foundBook);
 	}
 
 
 
-	/* Delete a book */
+	 /**
+     * Deletes a book from the database
+     * @param bookId is a Book class item to be deleted
+     * @return a book deleted
+     */
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<BookModel> deleteMember(@PathVariable(value = "id") Long bookId) {
 
-		BookModel bookModel = bookRep.findOneBook(bookId);
+		BookModel bookModel = bookService.findOneBook(bookId);
 		if (bookModel == null) {
 			return ResponseEntity.notFound().build();
 		} else
-			bookRep.delete(bookModel);
+			bookService.delete(bookModel);
 		return ResponseEntity.ok().build();
 	}
 	
@@ -91,7 +101,7 @@ public class BookController {
      */
 	@GetMapping("/all")
 	public List<BookModel> getAllBooks() {
-		return bookRep.findAllBooks();
+		return bookService.findAllBooks();
 	}
 
 }

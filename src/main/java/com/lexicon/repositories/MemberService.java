@@ -41,7 +41,7 @@ public class MemberService {
 	
 	/*Update a member by id*/
 	public void updateMember(Member member, long id) {
-		member.setId(id);
+		member.setmemberId(id);
 		memberRepository.save(member);
 	}
 	

@@ -6,12 +6,12 @@ import java.io.Serializable;
 
 
 @Entity
-@Table(name = "books")
+@Table(name = "book")
 public class BookModel implements Serializable {
 	
 		@Id
 	    @GeneratedValue(strategy = GenerationType.AUTO)
-	    private Long id;
+	    private Long bookId;
 
 	    @NotNull
 	    @Column(name="Title")
@@ -21,22 +21,32 @@ public class BookModel implements Serializable {
 	    @Column(name="Author")
 	    private String author;
 
-			    
+	   private boolean onLoan;
+	    
 	    public BookModel() {}
 
-		public BookModel(Long id, @NotNull String title, @NotNull String author) {
+		public BookModel(Long id, @NotNull String title, @NotNull String author, boolean onLoan) {
 			super();
-			this.id = id;
+			this.bookId = id;
 			this.title = title;
 			this.author = author;
+			this.onLoan =false;
 		}
 
-		public Long getId() {
-			return id;
+		public boolean isOnLoan() {
+			return onLoan;
 		}
 
-		public void setId(Long id) {
-			this.id = id;
+		public void setOnLoan(boolean onLoan) {
+			this.onLoan = onLoan;
+		}
+
+		public Long getbookId() {
+			return bookId;
+		}
+
+		public void setbookId(Long id) {
+			this.bookId = id;
 		}
 
 		public String getTitle() {
@@ -57,7 +67,8 @@ public class BookModel implements Serializable {
 
 	    @Override
 		public String toString() {
-			return "BookModel [id=" + id + ", title=" + title + ", author=" + author + "]";
+			return "BookModel [id=" + bookId + ", title=" + title + ", author=" + author + "]";
 		}
+
 
 }

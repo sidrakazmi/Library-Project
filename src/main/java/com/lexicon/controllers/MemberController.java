@@ -33,7 +33,7 @@ import com.lexicon.repositories.MemberRepository;
 public class MemberController {
 
 	@Autowired
-	MemberService memberRep;
+	MemberService memberService;
 
 	
     /**
@@ -44,55 +44,62 @@ public class MemberController {
    // @ResponseStatus(HttpStatus.CREATED)
 	@PostMapping("/add")
 	public Member addMember(@Valid @RequestBody Member newMember) {
-		return memberRep.addMember(newMember);
+		return memberService.addMember(newMember);
 	}
 	
 
 
     /**
      * Updates a members details and saves it to the database
-     * @param memDetails is a Book class item to be added
+     * @param memberUpdates is a Book class item to be added
      * @return updatedMember as an object
      */
 	@PutMapping("/update/{id}")
-	public ResponseEntity<Member> updateMember(@PathVariable(value = "id") Long memId, @Valid @RequestBody Member memDetails) {
+	public ResponseEntity<Member> updateMember(@PathVariable(value = "id") Long memId, @Valid @RequestBody Member memberUpdates) {
          
-		Member mem = memberRep.findOne(memId);
+		Member mem = memberService.findOne(memId);
 		if (mem == null) {
 			return ResponseEntity.notFound().build();
 		} else
-			mem.setName(memDetails.getName());
-		mem.setEmail(memDetails.getEmail());
+			mem.setName(memberUpdates.getName());
+		mem.setEmail(memberUpdates.getEmail());
 	
-		Member updatedMember = memberRep.addMember(mem);
+		Member updatedMember = memberService.addMember(mem);
 		return ResponseEntity.ok().body(mem);	
 		}
 	
 
-	/* Find a member by id */
+    /**
+     * Finds a member from the database
+     * @param memId is a Member class item to be searched for
+     * @return updatedMember as response
+     */
 	@GetMapping("/members/{id}")
 	public ResponseEntity<Member> getMemberById(@PathVariable(value = "id") Long memId) {
 
-		Member mem = memberRep.findOne(memId);
+		Member foundMember = memberService.findOne(memId);
 
-		if (mem == null) {
+		if (foundMember == null) {
 			return ResponseEntity.notFound().build();
 		} else
-			return ResponseEntity.ok().body(mem);
+			return ResponseEntity.ok().body(foundMember);
 
 	}
 	
-
 	
-	/* Delete a member */
+	/**
+     * Deletes a member from the database
+     * @param memId is a Member class item to be deleted
+     * @return a member deleted
+     */
 	@DeleteMapping("/members/{id}")
 	public ResponseEntity<Member> deleteMember(@PathVariable(value = "id") Long memId) {
 		 
-		Member mem = memberRep.findOne(memId);
+		Member mem = memberService.findOne(memId);
 		if (mem == null) {
 			return ResponseEntity.notFound().build();
 		} else
-			memberRep.delete(mem);
+			memberService.delete(mem);
 		    return ResponseEntity.ok().build();
 		}
 	
@@ -102,7 +109,7 @@ public class MemberController {
      */
 	@RequestMapping(value = "/all", method = RequestMethod.GET)
 	public List<Member> getAllMembers() {
-		return memberRep.findAll();
+		return memberService.findAll();
 	}
 		
 }
