@@ -50,12 +50,20 @@ public class BookService {
 	
 	/*Find a book by id*/ //throws book not found exception
 	public BookModel findOneBook(Long id) {
-		return bookRepository.getOne(id);
-		//return repository.findById(id).get();
+		return bookRepository.findById(id).get();
 	}
 	
 	/*Delete a book*/  //throws book not found exception
-	public void delete(BookModel book) {
+	/*public void delete(BookModel book) {
 		bookRepository.delete(book);
-	}
+	}*/
+	
+	public void delete( long id) {
+		 BookModel book =bookRepository.getOne(id);
+				
+		 if(!bookRepository.existsById(id))
+				  return;
+	
+		bookRepository.delete(book);
+	    }
 }

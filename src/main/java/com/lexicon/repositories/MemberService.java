@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.lexicon.exceptions.BookNotFound;
+import com.lexicon.exceptions.BookNotFoundException;
 import com.lexicon.exceptions.MemberNotFound;
 import com.lexicon.models.BookModel;
 import com.lexicon.models.Loan;

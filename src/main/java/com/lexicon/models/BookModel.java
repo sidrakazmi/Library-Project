@@ -21,6 +21,7 @@ public class BookModel implements Serializable {
 	    @Column(name="Author")
 	    private String author;
 
+	 
 	   private boolean onLoan;
 	    
 	    public BookModel() {}
@@ -30,7 +31,7 @@ public class BookModel implements Serializable {
 			this.bookId = id;
 			this.title = title;
 			this.author = author;
-			this.onLoan =false;
+			this.onLoan =onLoan;
 		}
 
 		public boolean isOnLoan() {
@@ -71,4 +72,7 @@ public class BookModel implements Serializable {
 		}
 
 
+	    /*INSERT INTO BOOK (book_id,author,on_loan,title)
+VALUES (1,'hello','yes', 'world');
+	     * */
 }
