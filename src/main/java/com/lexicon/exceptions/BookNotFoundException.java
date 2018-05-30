@@ -1,13 +1,13 @@
 package com.lexicon.exceptions;
 
-public class BookNotFound extends Exception {
+public class BookNotFoundException extends Exception {
 
-	public BookNotFound(String message) 
+	public BookNotFoundException(String message) 
 	{
 		super(message);
 	}
 	
-	public BookNotFound() 
+	public BookNotFoundException() 
 	{
 		super();
 	}

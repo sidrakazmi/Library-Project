@@ -3,6 +3,7 @@ package com.lexicon.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
@@ -22,13 +23,15 @@ import com.lexicon.repositories.LoanService;
 public class Member {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
 	private long memId;
 	
 	@NotBlank
+    @Column(name="Name")
 	private String name;
 	
 	@NotBlank
+	@Column(name="email")
 	private String email;
 	
 	@OneToMany(mappedBy = "member")
@@ -67,29 +70,12 @@ public class Member {
 	}
 	
 	public final void Return(BookModel book) {
-		Loan loan = FindCurrentLoanFor(book);
-		if (loan != null) {
-			loan.HasNotBeenRuturned();
-			book.isOnLoan();
+			if (book.isOnLoan()==true) {
 			System.out.println("Book has not been returned");
 		}
 	}
 	
-
 /*
-	public  Loan Loan(BookModel book) {
-		Loan loan =null;
-		if (CanLoan(book)) {
-			loan = LoanService.addLoan(book, this);
-			getLoans().add(loan);
-			return loan;
-		}else{
-			return null;
-		}
-	}*/
-
-	
-
 	public final Loan FindCurrentLoanFor(BookModel book) {
 		 for(Loan tmp:Loans){
 	            if(tmp.getBook().getbookId().equals(book.getbookId()))
@@ -98,7 +84,7 @@ public class Member {
 	            }
 	        }
 		return null;
-	}
+	}*/
 
 
 	@Override

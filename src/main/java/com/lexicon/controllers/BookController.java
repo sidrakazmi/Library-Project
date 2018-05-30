@@ -75,7 +75,6 @@ public class BookController {
 	 * @throws BookNotFoundException
 	 */
 	@GetMapping("/find/{id}")
-	
 	public BookModel getNoteById(@PathVariable(value = "id") Long bookId) {
 	    return bookService.findOneBook(bookId);
 	    		

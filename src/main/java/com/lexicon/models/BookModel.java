@@ -11,7 +11,7 @@ public class BookModel implements Serializable {
 	
 		@Id
 	    @GeneratedValue(strategy = GenerationType.AUTO)
-	    private Long bookId;
+	    private long bookId;
 
 	    @NotNull
 	    @Column(name="Title")
@@ -26,12 +26,12 @@ public class BookModel implements Serializable {
 	    
 	    public BookModel() {}
 
-		public BookModel(Long id, @NotNull String title, @NotNull String author, boolean onLoan) {
+		public BookModel(Long id, @NotNull String title, @NotNull String author) {
 			super();
 			this.bookId = id;
 			this.title = title;
 			this.author = author;
-			this.onLoan =onLoan;
+			this.onLoan =false;
 		}
 
 		public boolean isOnLoan() {
@@ -72,6 +72,19 @@ public class BookModel implements Serializable {
 		}
 
 
+	    public boolean status() {
+	        if (this.onLoan==true)
+	        	return true;
+	        else
+	        	return false;
+	    }
+	    
+	    public void returned() {
+	    	this.onLoan=false;
+	    }
+	    public void rented() {
+	         this.onLoan =true;
+	        }
 	    /*INSERT INTO BOOK (book_id,author,on_loan,title)
 VALUES (1,'hello','yes', 'world');
 	     * */

@@ -28,10 +28,7 @@ public class Loan {
 	private Date issueDate;
 	private Date returnDate;
 	
-	private boolean onLoan;
-	
-	
-	public Loan() {
+		public Loan() {
 		super();
 	}
 
@@ -47,8 +44,7 @@ public class Loan {
 		gCal.add(GregorianCalendar.DAY_OF_MONTH, 14);		
 		this.returnDate = gCal.getTime();
 		
-		this.onLoan = false;
-	}
+		}
 
 
 	
@@ -102,33 +98,12 @@ public class Loan {
 	}
 
 
-	public boolean isOnLoan() {
-		return onLoan;
-	}
-
-
-	public void setOnLoan(boolean onLoan) {
-		this.onLoan = onLoan;
-	}
-
-
-	public boolean HasNotBeenRuturned() {
-		return returnDate == null;
-	}
-
-
 	@Override
 	public String toString() {
 		return "Loan [id=" + id + ", member=" + member + ", book=" + book + ", issuetDateAndTime=" + issueDate
-				+ ", returnDateAndTime=" + returnDate + ", onLoan="
-				+ onLoan + "]";
+				+ ", returnDateAndTime=" + returnDate +  "]";
 	}
 
-	public void endLoan() {
-		returnDate = new Date();
-		this.onLoan = false;
-	}
-	
 	
 	
 	

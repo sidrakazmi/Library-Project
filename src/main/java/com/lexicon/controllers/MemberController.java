@@ -1,5 +1,6 @@
 package com.lexicon.controllers;
 
+import java.net.URI;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.lexicon.models.BookModel;
 import com.lexicon.models.Member;
@@ -43,10 +45,19 @@ public class MemberController {
      */
    // @ResponseStatus(HttpStatus.CREATED)
 	@PostMapping("/add")
-	public Member addMember(@Valid @RequestBody Member newMember) {
-		return memberService.addMember(newMember);
+	public ResponseEntity<Member> createMember(@RequestBody Member newMember) {
+		Member createdMember = memberService.addMember(newMember);
+
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+				.buildAndExpand(createdMember.getmemberId()).toUri();
+				
+		return ResponseEntity.created(location).build();
 	}
 	
+//	public Member addMember(@Valid @RequestBody Member newMember) {
+//		return memberService.addMember(newMember);
+//	}
+//	
 
 
     /**
